@@ -17,12 +17,7 @@ class StudentController extends Controller {
 			'email'      => 'escollarkennelyn@gmail.com'
 		];
 
-		return $this->middleware->run(
-			['student_access'],
-			function () use ($student) {
-				$this->call->view('student_profile', $student);
-			}
-		);
+		$this->call->view('student_profile', $student);
 	}
 }
 ?>
