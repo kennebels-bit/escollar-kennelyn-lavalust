@@ -50,6 +50,15 @@
         <p><strong>Year Level:</strong> <?= $year ?></p>
         <p><strong>Section:</strong> <?= $section ?></p>
         <p><strong>Email:</strong> <?= $email ?></p>
+       <p><strong>Address:</strong> <?= $address ?></p>
+        <p><strong>Contact Number:</strong> <?= $contact ?></p>
+        <p><strong>Skills:</strong> <?= $skills ?></p>
+        <p><strong>Hobbies:</strong> <?= $hobbies ?></p>    
+        <p><strong>About Me:</strong> <?= $description ?></p>
+        <p><strong>Social Media:</strong>
+        <a href="<?= $facebook ?>" target="_blank" style="color:#ff6b35;">Facebook</a> |
+        <a href="<?= $github ?>" target="_blank" style="color:#ff6b35;">GitHub</a>
+</p>
         <nav>
             <a href="<?= site_url('student') ?>">Home</a> |
             <a href="<?= site_url('student/profile') ?>">Student Profile</a>
