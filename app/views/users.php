@@ -26,11 +26,11 @@
         <tbody>
             <?php foreach ($users as $user): ?>
                 <tr>
-                    <td><?php echo html_escape($user->id); ?></td>
-                    <td><?php echo html_escape($user->firstname); ?></td>
-                    <td><?php echo html_escape($user->lastname); ?></td>
-                    <td><?php echo html_escape($user->email); ?></td>
-                    <td><?php echo html_escape($user->username); ?></td>
+                    <td><?php echo html_escape($user['id']); ?></td>
+                    <td><?php echo html_escape($user['firstname']); ?></td>
+                    <td><?php echo html_escape($user['lastname']); ?></td>
+                    <td><?php echo html_escape($user['email']); ?></td>
+                    <td><?php echo html_escape($user['username']); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
