@@ -20,7 +20,7 @@ class StudentController extends Controller {
     		 'skills'      => 'PHP, Git, GitHub, Web Deployment',
              'hobbies'     => 'Reading, Coding, Listening to Music',
    		     'description' => 'A passionate BSIT student who enjoys building web applications and learning new technologies.',
-             'facebook'    => 'https://facebook.com/Kennelyn Manalo Escollar',
+			 'facebook'    => 'https://www.facebook.com/kennelyn.escollar.26',
              'github'      => 'https://github.com/kennebels-bit'
 		];
 
