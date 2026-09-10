@@ -7,6 +7,16 @@ class UsersModel extends Model
 
     public function getAll()
     {
-        return $this->db->table($this->table)->get_all();
+        return $this->db
+            ->table($this->table)
+            ->get_all();
+    }
+
+    public function getByUsername($username)
+    {
+        return $this->db
+            ->table($this->table)
+            ->where('username', $username)
+            ->get();
     }
 }

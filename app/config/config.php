@@ -80,7 +80,6 @@ $config['environment'] = getenv('APP_ENV') ?: 'development';
 |
 */
 $config['base_url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-
 /*
 |--------------------------------------------------------------------------
 | Static File Proxies
