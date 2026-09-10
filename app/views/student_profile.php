@@ -3,231 +3,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Profile - Kennelyn Escollar</title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #1a1a2e;
-            color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            color: #ff6b35;
-        }
-        nav a {
-            color: #ff6b35;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-        .card {
-            background: #16213e;
-            padding: 40px;
-            border-radius: 12px;
-            text-align: left;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            min-width: 300px;
-        }
-        .card p {
-            margin: 8px 0;
-        }
-        .card strong {
-            color: #ff6b35;
-        }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 40px; font-family: Arial, sans-serif; background: #f1f5f9; color: #334155; }
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 30px; background: #fff; border: 1px solid #e2e8f0; border-radius: 15px; box-shadow: 0 10px 30px rgba(15, 23, 42, .08); }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid #e2e8f0; }
+        .eyebrow { margin: 0 0 6px; color: #64748b; font-size: 13px; }
+        h1 { margin: 0; color: #2563eb; font-size: 28px; }
+        .activity-nav, .profile-actions, .socials { display: flex; flex-wrap: wrap; gap: 8px; }
+        .activity-nav a, .profile-actions a, .socials a { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 8px 13px; border: 1px solid #bfdbfe; border-radius: 8px; color: #2563eb; background: #eff6ff; font-size: 13px; font-weight: 600; text-decoration: none; }
+        .activity-nav a:hover, .activity-nav .active, .profile-actions a:hover, .socials a:hover { color: #fff; background: #2563eb; border-color: #2563eb; }
+        .profile-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; padding-top: 30px; }
+        .summary { padding: 24px; border-radius: 12px; background: #eff6ff; border: 1px solid #dbeafe; }
+        .avatar { display: flex; align-items: center; justify-content: center; width: 76px; height: 76px; margin-bottom: 18px; border-radius: 12px; color: #fff; background: linear-gradient(135deg, #60a5fa, #2563eb); font-size: 30px; }
+        .summary h2 { margin: 0 0 8px; color: #1e293b; font-size: 22px; }
+        .summary p { margin: 0; color: #64748b; line-height: 1.6; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+        .info-row { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        .info-row .label { color: #2563eb; font-weight: 700; }
+        .info-row .value { color: #475569; text-align: right; }
+        .about { margin-top: 24px; padding: 18px; border-left: 4px solid #2563eb; border-radius: 8px; background: #f8fafc; line-height: 1.6; }
+        .about .label { display: block; margin-bottom: 6px; color: #2563eb; font-weight: 700; }
+        .socials { margin-top: 22px; }
+        .profile-actions { margin-top: 28px; }
+        @media (max-width: 900px) { body { padding: 20px; } .topbar { align-items: flex-start; flex-direction: column; } .profile-layout { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Student Information</h1>
-        <p><strong>Student ID:</strong> <?= $student_id ?></p>
-        <p><strong>Name:</strong> <?= $name ?></p>
-        <p><strong>Course:</strong> <?= $course ?></p>
-        <p><strong>Year Level:</strong> <?= $year ?></p>
-        <p><strong>Section:</strong> <?= $section ?></p>
-        <p><strong>Email:</strong> <?= $email ?></p>
-       <p><strong>Address:</strong> <?= $address ?></p>
-        <p><strong>Contact Number:</strong> <?= $contact ?></p>
-        <p><strong>Skills:</strong> <?= $skills ?></p>
-        <p><strong>Hobbies:</strong> <?= $hobbies ?></p>    
-        <p><strong>About Me:</strong> <?= $description ?></p>
-        <p><strong>Social Media:</strong>
-        <a href="<?= $facebook ?>" target="_blank" style="color:#ff6b35;">Facebook</a> |
-        <a href="<?= $github ?>" target="_blank" style="color:#ff6b35;">GitHub</a>
-</p>
-        <nav>
-            <a href="<?= site_url('student') ?>">Home</a> |
-            <a href="<?= site_url('student/profile') ?>">Student Profile</a>
-        </nav>
-    </div>
-</body>
-</html><?php defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed'); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student Profile - Kennelyn Escollar</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: #f1f5f9;
-            color: #334155;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 30px 16px;
-        }
-        .card {
-            background: #fffafc;
-            padding: 40px 44px;
-            border-radius: 28px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-            border: 1px solid #e2e8f0;
-            width: 100%;
-            max-width: 460px;
-        }
-        .avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #60a5fa, #2563eb);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            margin: 0 auto 16px;
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
-        }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: #2563eb;
-            font-size: 26px;
-            margin: 0 0 24px;
-            text-align: center;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px dashed #cbd5e1;
-            font-size: 14.5px;
-        }
-        .info-row:last-of-type {
-            border-bottom: none;
-        }
-        .info-row .label {
-            color: #2563eb;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .info-row .value {
-            text-align: right;
-            color: #334155;
-        }
-        .about {
-            margin-top: 18px;
-            background: #eff6ff;
-            border-radius: 16px;
-            padding: 16px 18px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .about .label {
-            display: block;
-            color: #2563eb;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .socials {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .socials a {
-            display: inline-block;
-            color: #ffffff;
-            background: linear-gradient(135deg, #60a5fa, #2563eb);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            padding: 9px 20px;
-            border-radius: 999px;
-            margin: 0 5px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 26px;
-        }
-        nav a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            background: #eff6ff;
-            border: 1.5px solid #bfdbfe;
-            padding: 10px 22px;
-            border-radius: 999px;
-            transition: all 0.2s ease;
-        }
-        nav a:hover {
-            background: #2563eb;
-            color: #ffffff;
-            border-color: #2563eb;
-        }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <nav aria-label="Activity navigation">
-            <a href="<?= site_url() ?>">← Activities</a>
-            <a href="<?= site_url('student') ?>">Student</a>
-            <a href="<?= site_url('users') ?>">Users</a>
-            <a href="<?= site_url('login') ?>">Products</a>
-        </nav>
-        <div class="avatar">🎀</div>
-        <h1>Student Information</h1>
+    <main class="container">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Student Information</p>
+                <h1>Student Profile</h1>
+            </div>
+            <nav class="activity-nav" aria-label="Activity navigation">
+                <a href="<?= site_url() ?>">&larr; Activities</a>
+                <a href="<?= site_url('student') ?>" class="active">Student</a>
+                <a href="<?= site_url('users') ?>">Users</a>
+                <a href="<?= site_url('login') ?>">Products</a>
+            </nav>
+        </header>
 
-        <div class="info-row"><span class="label">Student ID</span><span class="value"><?= $student_id ?></span></div>
-        <div class="info-row"><span class="label">Name</span><span class="value"><?= $name ?></span></div>
-        <div class="info-row"><span class="label">Course</span><span class="value"><?= $course ?></span></div>
-        <div class="info-row"><span class="label">Year Level</span><span class="value"><?= $year ?></span></div>
-        <div class="info-row"><span class="label">Section</span><span class="value"><?= $section ?></span></div>
-        <div class="info-row"><span class="label">Email</span><span class="value"><?= $email ?></span></div>
-        <div class="info-row"><span class="label">Address</span><span class="value"><?= $address ?></span></div>
-        <div class="info-row"><span class="label">Contact Number</span><span class="value"><?= $contact ?></span></div>
-        <div class="info-row"><span class="label">Skills</span><span class="value"><?= $skills ?></span></div>
-        <div class="info-row"><span class="label">Hobbies</span><span class="value"><?= $hobbies ?></span></div>
+        <section class="profile-layout">
+            <div class="summary">
+                <div class="avatar">🎓</div>
+                <h2><?= html_escape($name) ?></h2>
+                <p><?= html_escape($course) ?>, <?= html_escape($year) ?></p>
+                <div class="socials">
+                    <a href="<?= $facebook ?>" target="_blank" rel="noopener">Facebook</a>
+                    <a href="<?= $github ?>" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </div>
 
-        <div class="about">
-            <span class="label">About Me 💌</span>
-            <?= $description ?>
-        </div>
-
-        <div class="socials">
-            <a href="<?= $facebook ?>" target="_blank">Facebook</a>
-            <a href="<?= $github ?>" target="_blank">GitHub</a>
-        </div>
-
-        <nav>
-            <a href="<?= site_url('student') ?>">🏠 Home</a>
-            <a href="<?= site_url('student/profile') ?>">🎀 Profile</a>
-        </nav>
-    </div>
+            <div>
+                <div class="info-grid">
+                    <div class="info-row"><span class="label">Student ID</span><span class="value"><?= html_escape($student_id) ?></span></div>
+                    <div class="info-row"><span class="label">Section</span><span class="value"><?= html_escape($section) ?></span></div>
+                    <div class="info-row"><span class="label">Email</span><span class="value"><?= html_escape($email) ?></span></div>
+                    <div class="info-row"><span class="label">Contact</span><span class="value"><?= html_escape($contact) ?></span></div>
+                    <div class="info-row"><span class="label">Address</span><span class="value"><?= html_escape($address) ?></span></div>
+                    <div class="info-row"><span class="label">Skills</span><span class="value"><?= html_escape($skills) ?></span></div>
+                    <div class="info-row"><span class="label">Hobbies</span><span class="value"><?= html_escape($hobbies) ?></span></div>
+                </div>
+                <div class="about">
+                    <span class="label">About Me</span>
+                    <?= html_escape($description) ?>
+                </div>
+                <nav class="profile-actions" aria-label="Student profile navigation">
+                    <a href="<?= site_url('student') ?>">&larr; Back to Student Home</a>
+                </nav>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

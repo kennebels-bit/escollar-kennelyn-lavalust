@@ -3,114 +3,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Home - Kennelyn Escollar</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: #f1f5f9;
-            color: #334155;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        .bg-decor {
-            position: fixed;
-            font-size: 28px;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        .bg-decor.tl { top: 30px; left: 40px; }
-        .bg-decor.br { bottom: 30px; right: 40px; }
-        .bg-decor.tr { top: 40px; right: 60px; }
-        .bg-decor.bl { bottom: 50px; left: 60px; }
-
-        .card {
-            background: #fffafc;
-            padding: 48px 56px;
-            border-radius: 28px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-            border: 1px solid #e2e8f0;
-            max-width: 480px;
-        }
-        .badge {
-            display: inline-block;
-            background: #dbeafe;
-            color: #2563eb;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            padding: 6px 16px;
-            border-radius: 999px;
-            margin-bottom: 18px;
-            text-transform: uppercase;
-        }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: #2563eb;
-            font-size: 30px;
-            margin: 0 0 14px;
-        }
-        p.subtitle {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #64748b;
-            margin: 0 0 28px;
-        }
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-        }
-        nav a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            background: #eff6ff;
-            border: 1.5px solid #bfdbfe;
-            padding: 10px 22px;
-            border-radius: 999px;
-            transition: all 0.2s ease;
-        }
-        nav a:hover {
-            background: #2563eb;
-            color: #ffffff;
-            border-color: #2563eb;
-        }
-
-        .activity-nav {
-            margin-bottom: 18px;
-        }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 40px; font-family: Arial, sans-serif; background: #f1f5f9; color: #334155; }
+        .card { width: 90%; max-width: 1100px; margin: 0 auto; padding: 30px; background: #fff; border: 1px solid #e2e8f0; border-radius: 15px; box-shadow: 0 10px 30px rgba(15, 23, 42, .08); }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid #e2e8f0; }
+        .eyebrow { margin: 0 0 6px; color: #64748b; font-size: 13px; }
+        h1 { margin: 0; color: #2563eb; font-size: 28px; }
+        .subtitle { max-width: 620px; margin: 28px 0; color: #64748b; font-size: 15px; line-height: 1.7; }
+        .badge { display: inline-block; padding: 7px 12px; border-radius: 8px; background: #dbeafe; color: #2563eb; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .activity-nav, .student-nav { display: flex; flex-wrap: wrap; gap: 8px; }
+        .activity-nav a, .student-nav a { display: inline-flex; align-items: center; min-height: 36px; padding: 8px 13px; border: 1px solid #bfdbfe; border-radius: 8px; color: #2563eb; background: #eff6ff; font-size: 13px; font-weight: 600; text-decoration: none; }
+        .activity-nav a:hover, .activity-nav .active, .student-nav a:hover { color: #fff; background: #2563eb; border-color: #2563eb; }
+        .student-nav { padding-top: 22px; border-top: 1px solid #e2e8f0; }
+        @media (max-width: 900px) { body { padding: 20px; } .topbar { align-items: flex-start; flex-direction: column; } }
     </style>
 </head>
 <body>
-    
-    <div class="card">
-        <span class="badge">Student Portal</span>
-        <h1>Welcome, Kennelyn!</h1>
-        <p class="subtitle">This is the home page for Kennelyn Escollar's Student Information System.</p>
-        <nav class="activity-nav" aria-label="Activity navigation">
-            <a href="<?= site_url() ?>">← Activities</a>
-            <a href="<?= site_url('student') ?>">Student</a>
-            <a href="<?= site_url('users') ?>">Users</a>
-            <a href="<?= site_url('login') ?>">Products</a>
+    <main class="card">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Student Information</p>
+                <h1>Student Home</h1>
+            </div>
+            <nav class="activity-nav" aria-label="Activity navigation">
+                <a href="<?= site_url() ?>">&larr; Activities</a>
+                <a href="<?= site_url('student') ?>" class="active">Student</a>
+                <a href="<?= site_url('users') ?>">Users</a>
+                <a href="<?= site_url('login') ?>">Products</a>
+            </nav>
+        </header>
+        <p class="badge">Student Portal</p>
+        <p class="subtitle">Welcome to Kennelyn Escollar's Student Information System. Use the profile button below to view the complete student record.</p>
+        <nav class="student-nav" aria-label="Student navigation">
+            <a href="<?= site_url('student/profile') ?>">View Student Profile</a>
         </nav>
-        <nav aria-label="Student navigation">
-            <a href="<?= site_url('student') ?>">Home</a>
-            <a href="<?= site_url('student/profile') ?>">Profile</a>
-        </nav>
-    </div>
+    </main>
 </body>
 </html>
