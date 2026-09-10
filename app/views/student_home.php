@@ -12,8 +12,8 @@
         }
         body {
             font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #ffdde1 0%, #ffe8f0 40%, #fff0f6 100%);
-            color: #5b3a4a;
+            background: #f1f5f9;
+            color: #334155;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,14 +38,14 @@
             padding: 48px 56px;
             border-radius: 28px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(255, 133, 161, 0.25);
-            border: 1px solid #ffd6e3;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            border: 1px solid #e2e8f0;
             max-width: 480px;
         }
         .badge {
             display: inline-block;
-            background: #ffd6e3;
-            color: #b5495b;
+            background: #dbeafe;
+            color: #2563eb;
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1.5px;
@@ -57,36 +57,41 @@
         h1 {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            color: #e05a7d;
+            color: #2563eb;
             font-size: 30px;
             margin: 0 0 14px;
         }
         p.subtitle {
             font-size: 15px;
             line-height: 1.6;
-            color: #8a6272;
+            color: #64748b;
             margin: 0 0 28px;
         }
         nav {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 12px;
         }
         nav a {
-            color: #e05a7d;
+            color: #2563eb;
             text-decoration: none;
             font-weight: 700;
             font-size: 14px;
-            background: #fff0f5;
-            border: 1.5px solid #ffb6c9;
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
             padding: 10px 22px;
             border-radius: 999px;
             transition: all 0.2s ease;
         }
         nav a:hover {
-            background: #ff8fa8;
+            background: #2563eb;
             color: #ffffff;
-            border-color: #ff8fa8;
+            border-color: #2563eb;
+        }
+
+        .activity-nav {
+            margin-bottom: 18px;
         }
     </style>
 </head>
@@ -96,9 +101,15 @@
         <span class="badge">Student Portal</span>
         <h1>Welcome, Kennelyn!</h1>
         <p class="subtitle">This is the home page for Kennelyn Escollar's Student Information System.</p>
-        <nav>
-            <a href="<?= site_url('student') ?>">🏠 Home</a>
-            <a href="<?= site_url('student/profile') ?>"> Profile</a>
+        <nav class="activity-nav" aria-label="Activity navigation">
+            <a href="<?= site_url() ?>">← Activities</a>
+            <a href="<?= site_url('student') ?>">Student</a>
+            <a href="<?= site_url('users') ?>">Users</a>
+            <a href="<?= site_url('login') ?>">Products</a>
+        </nav>
+        <nav aria-label="Student navigation">
+            <a href="<?= site_url('student') ?>">Home</a>
+            <a href="<?= site_url('student/profile') ?>">Profile</a>
         </nav>
     </div>
 </body>

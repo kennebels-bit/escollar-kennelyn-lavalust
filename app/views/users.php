@@ -45,6 +45,28 @@
             opacity: 0.9;
         }
 
+        .activity-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 20px 25px 0;
+        }
+
+        .activity-nav a {
+            padding: 8px 12px;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            color: #2563eb;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .activity-nav a:hover,
+        .activity-nav .active {
+            background: #2563eb;
+            color: white;
+        }
+
         .table-container {
             padding: 25px;
             overflow-x: auto;
@@ -120,6 +142,13 @@
 <body>
 
 <div class="container">
+
+    <nav class="activity-nav" aria-label="Activity navigation">
+        <a href="<?= site_url(); ?>">← Activities</a>
+        <a href="<?= site_url('student'); ?>">Student</a>
+        <a href="<?= site_url('users'); ?>" class="active">Users</a>
+        <a href="<?= site_url('login'); ?>">Products</a>
+    </nav>
 
     <div class="header">
         <h1>User List</h1>

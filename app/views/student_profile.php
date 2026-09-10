@@ -79,8 +79,8 @@
         }
         body {
             font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #ffdde1 0%, #ffe8f0 40%, #fff0f6 100%);
-            color: #5b3a4a;
+            background: #f1f5f9;
+            color: #334155;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -93,8 +93,8 @@
             background: #fffafc;
             padding: 40px 44px;
             border-radius: 28px;
-            box-shadow: 0 10px 40px rgba(255, 133, 161, 0.25);
-            border: 1px solid #ffd6e3;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            border: 1px solid #e2e8f0;
             width: 100%;
             max-width: 460px;
         }
@@ -102,18 +102,18 @@
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ffb6c9, #ff8fa8);
+            background: linear-gradient(135deg, #60a5fa, #2563eb);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 30px;
             margin: 0 auto 16px;
-            box-shadow: 0 6px 16px rgba(255, 143, 168, 0.4);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
         }
         h1 {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            color: #e05a7d;
+            color: #2563eb;
             font-size: 26px;
             margin: 0 0 24px;
             text-align: center;
@@ -123,24 +123,24 @@
             justify-content: space-between;
             gap: 12px;
             padding: 10px 0;
-            border-bottom: 1px dashed #ffdbe6;
+            border-bottom: 1px dashed #cbd5e1;
             font-size: 14.5px;
         }
         .info-row:last-of-type {
             border-bottom: none;
         }
         .info-row .label {
-            color: #b5495b;
+            color: #2563eb;
             font-weight: 700;
             white-space: nowrap;
         }
         .info-row .value {
             text-align: right;
-            color: #5b3a4a;
+            color: #334155;
         }
         .about {
             margin-top: 18px;
-            background: #fff0f5;
+            background: #eff6ff;
             border-radius: 16px;
             padding: 16px 18px;
             font-size: 14px;
@@ -148,7 +148,7 @@
         }
         .about .label {
             display: block;
-            color: #b5495b;
+            color: #2563eb;
             font-weight: 700;
             margin-bottom: 6px;
         }
@@ -159,14 +159,14 @@
         .socials a {
             display: inline-block;
             color: #ffffff;
-            background: linear-gradient(135deg, #ffb6c9, #ff8fa8);
+            background: linear-gradient(135deg, #60a5fa, #2563eb);
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
             padding: 9px 20px;
             border-radius: 999px;
             margin: 0 5px;
-            box-shadow: 0 4px 12px rgba(255, 143, 168, 0.35);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
         nav {
             display: flex;
@@ -175,25 +175,31 @@
             margin-top: 26px;
         }
         nav a {
-            color: #e05a7d;
+            color: #2563eb;
             text-decoration: none;
             font-weight: 700;
             font-size: 14px;
-            background: #fff0f5;
-            border: 1.5px solid #ffb6c9;
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
             padding: 10px 22px;
             border-radius: 999px;
             transition: all 0.2s ease;
         }
         nav a:hover {
-            background: #ff8fa8;
+            background: #2563eb;
             color: #ffffff;
-            border-color: #ff8fa8;
+            border-color: #2563eb;
         }
     </style>
 </head>
 <body>
     <div class="card">
+        <nav aria-label="Activity navigation">
+            <a href="<?= site_url() ?>">← Activities</a>
+            <a href="<?= site_url('student') ?>">Student</a>
+            <a href="<?= site_url('users') ?>">Users</a>
+            <a href="<?= site_url('login') ?>">Products</a>
+        </nav>
         <div class="avatar">🎀</div>
         <h1>Student Information</h1>
 

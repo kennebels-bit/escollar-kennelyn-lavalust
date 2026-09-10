@@ -336,68 +336,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             max-width: 480px;
         }
 
-        /* ── ACTIVITY HUB ── */
-        .activity-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-top: 3rem;
-        }
-
-        .activity-card {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            min-height: 250px;
-            padding: 1.5rem;
-            background: var(--bg2);
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .activity-card:hover { background: var(--bg3); }
-
-        .activity-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-hot);
-            border-radius: 10px;
-            background: var(--lava-glow);
-            font-size: 1.25rem;
-        }
-
-        .activity-card h3 {
-            margin-bottom: 0.65rem;
-            font-size: 1rem;
-        }
-
-        .activity-card p {
-            flex: 1;
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            line-height: 1.6;
-        }
-
-        .activity-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            margin-top: 1.25rem;
-            color: #f97316;
-            font-size: 0.78rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .activity-link:hover { color: #fb923c; }
-
         /* ── FEATURES GRID ── */
         .features-layout {
             display: grid;
@@ -607,16 +545,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
         @media (max-width: 768px) {
             .features-layout { grid-template-columns: 1fr; }
-            .activity-grid { grid-template-columns: 1fr 1fr; }
             .code-section { grid-template-columns: 1fr; }
             nav { padding: 1rem 1.5rem; }
             .nav-links a:not(.btn-nav) { display: none; }
             section { padding: 3rem 1.5rem; }
         }
 
-        @media (max-width: 480px) {
-            .activity-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
@@ -631,7 +565,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         LavaLust
     </a>
     <div class="nav-links">
-        <a href="#activities">Activities</a>
         <a href="https://lavalust.netlify.app/docs/" target="_blank">Docs</a>
         <a href="https://github.com/ronmarasigan/LavaLust" target="_blank">GitHub</a>
         <a href="https://lavalust.netlify.app/docs/" target="_blank" class="btn-nav">Get Started →</a>
@@ -676,44 +609,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         <div class="stat-label">API Ready</div>
     </div>
 </div>
-
-<div class="divider"></div>
-
-<!-- ACTIVITY HUB -->
-<section id="activities">
-    <div class="wrap">
-        <div class="section-label">// my activities</div>
-        <h2 class="section-title">One link. Every activity.</h2>
-        <p class="section-desc">Explore the projects and exercises built in this LavaLust workspace.</p>
-
-        <div class="activity-grid">
-            <div class="activity-card">
-                <div class="activity-icon">🔥</div>
-                <h3>LavaLust Landing</h3>
-                <p>Framework overview and the main project landing page.</p>
-                <a class="activity-link" href="<?= site_url(); ?>">Open activity <span aria-hidden="true">→</span></a>
-            </div>
-            <div class="activity-card">
-                <div class="activity-icon">🎓</div>
-                <h3>Student Information</h3>
-                <p>Student home page and profile information activity.</p>
-                <a class="activity-link" href="<?= site_url('student'); ?>">Open activity <span aria-hidden="true">→</span></a>
-            </div>
-            <div class="activity-card">
-                <div class="activity-icon">👥</div>
-                <h3>User List</h3>
-                <p>Browse the users activity powered by the database model.</p>
-                <a class="activity-link" href="<?= site_url('users'); ?>">Open activity <span aria-hidden="true">→</span></a>
-            </div>
-            <div class="activity-card">
-                <div class="activity-icon">📦</div>
-                <h3>Product Management</h3>
-                <p>Sign in to create, update, and manage product records.</p>
-                <a class="activity-link" href="<?= site_url('login'); ?>">Open activity <span aria-hidden="true">→</span></a>
-            </div>
-        </div>
-    </div>
-</section>
 
 <div class="divider"></div>
 
