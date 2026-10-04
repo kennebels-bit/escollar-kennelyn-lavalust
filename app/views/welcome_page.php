@@ -624,7 +624,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             <a href="<?= site_url('student'); ?>" class="btn btn-primary">Student Information</a>
             <a href="<?= site_url('users'); ?>" class="btn btn-ghost">User List</a>
             <a href="<?= site_url('login'); ?>" class="btn btn-ghost">Legacy Product Management</a>
-            <a href="<?= site_url('product-desk/index.html'); ?>" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">API Product Management</a>
+            <a href="<?= base_url('product-desk/index.html'); ?>" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">API Product Management</a>
         </div>
     </div>
 </section>
