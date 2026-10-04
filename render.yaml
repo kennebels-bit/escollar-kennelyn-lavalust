@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: lavalust-product-system
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./public/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    preDeployCommand: MIGRATIONS_ENABLED=true php lava migration run
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_KEY
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false

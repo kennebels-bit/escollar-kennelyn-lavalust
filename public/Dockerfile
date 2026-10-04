@@ -1,6 +1,14 @@
-ARG PHP_VERSION=8.5
+FROM node:22-alpine AS frontend-build
 
-FROM php:${PHP_VERSION}-apache
+WORKDIR /frontend
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend/ ./
+ARG VITE_API_BASE_URL=/api
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+RUN npm run build
+
+FROM php:8.5-apache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
@@ -20,6 +28,9 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 
 # Copy app files
 COPY . /var/www/html/
+
+# Include the separately built React application in the existing Render service.
+COPY --from=frontend-build /frontend/dist/ /var/www/html/public/product-desk/
 
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html \

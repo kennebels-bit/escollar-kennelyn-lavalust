@@ -39,12 +39,11 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 | Enable/Disable Migrations
 |--------------------------------------------------------------------------
 |
-| Migrations are disabled by default for security reasons.
-| You should enable migrations whenever you intend to do a schema migration
-| and disable it back when you're done.
+| Migrations are disabled by default for web requests.
+| Set MIGRATIONS_ENABLED=true only for an intentional CLI migration run.
 |
 */
-$config['migration_enabled'] = FALSE;
+$config['migration_enabled'] = getenv('MIGRATIONS_ENABLED') === 'true';
 
 /*
 |--------------------------------------------------------------------------
