@@ -2,9 +2,11 @@
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 $router->post('/api/auth/login', 'ProductApiController::login');
+$router->post('/api/auth/register', 'ProductApiController::register');
 $router->post('/api/auth/refresh', 'ProductApiController::refresh');
 $router->post('/api/auth/logout', 'ProductApiController::logout');
 $router->options('/api/auth/login', 'ProductApiController::options');
+$router->options('/api/auth/register', 'ProductApiController::options');
 $router->options('/api/auth/refresh', 'ProductApiController::options');
 $router->options('/api/auth/logout', 'ProductApiController::options');
 

@@ -192,13 +192,20 @@ function ProductForm({ product, onSave, onCancel, busy }) {
   );
 }
 
-function Login({ onLogin, busy, error }) {
+function Login({ onLogin, onRegister, busy, error }) {
+  const [isRegistering, setIsRegistering] = useState(false);
   const [identifier, setIdentifier] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   function submit(event) {
     event.preventDefault();
-    onLogin(identifier, password);
+    if (isRegistering) {
+      onRegister({ username, email, password });
+    } else {
+      onLogin(identifier, password);
+    }
   }
 
   return (
@@ -206,33 +213,72 @@ function Login({ onLogin, busy, error }) {
       <section className="login-card">
         <div className="brand-mark">P</div>
         <p className="eyebrow">LAVALUST INVENTORY</p>
-        <h1>Welcome back</h1>
-        <p className="muted">Sign in to manage your product catalog.</p>
+        <h1>{isRegistering ? 'Create your account' : 'Welcome back'}</h1>
+        <p className="muted">
+          {isRegistering ? 'Set up an account to manage your product catalog.' : 'Sign in to manage your product catalog.'}
+        </p>
         {error && <div className="alert alert-error" role="alert">{error}</div>}
         <form onSubmit={submit} className="login-form">
-          <label>
-            Username or email
-            <input
-              autoComplete="username"
-              value={identifier}
-              onChange={(event) => setIdentifier(event.target.value)}
-              required
-            />
-          </label>
+          {isRegistering ? (
+            <>
+              <label>
+                Username
+                <input
+                  autoComplete="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  minLength="3"
+                  maxLength="50"
+                  pattern="[A-Za-z0-9_.-]+"
+                  required
+                />
+              </label>
+              <label>
+                Email
+                <input
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  maxLength="255"
+                  required
+                />
+              </label>
+            </>
+          ) : (
+            <label>
+              Username or email
+              <input
+                autoComplete="username"
+                value={identifier}
+                onChange={(event) => setIdentifier(event.target.value)}
+                required
+              />
+            </label>
+          )}
           <label>
             Password
             <input
               type="password"
-              autoComplete="current-password"
+              autoComplete={isRegistering ? 'new-password' : 'current-password'}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              minLength={isRegistering ? 12 : undefined}
+              maxLength={isRegistering ? 72 : undefined}
               required
             />
           </label>
           <button className="button button-primary button-wide" disabled={busy}>
-            {busy ? 'Signing in…' : 'Sign in'}
+            {busy ? (isRegistering ? 'Creating account…' : 'Signing in…') : isRegistering ? 'Create account' : 'Sign in'}
           </button>
         </form>
+        <button
+          className="auth-switch"
+          type="button"
+          onClick={() => { setIsRegistering((current) => !current); }}
+        >
+          {isRegistering ? 'Already have an account? Sign in' : 'New here? Create an account'}
+        </button>
       </section>
       <p className="login-footnote">Secure access · Your inventory, in one place</p>
     </main>
@@ -285,6 +331,25 @@ function App() {
       const response = await apiRequest('/auth/login', {
         method: 'POST',
         body: { identifier, password },
+        auth: false,
+        retry: false,
+      });
+      saveSession(response.tokens, response.user);
+      setUser(response.user);
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function registerAccount(credentials) {
+    setBusy(true);
+    setError('');
+    try {
+      const response = await apiRequest('/auth/register', {
+        method: 'POST',
+        body: credentials,
         auth: false,
         retry: false,
       });
@@ -350,7 +415,7 @@ function App() {
   }
 
   if (!user || !getAccessToken()) {
-    return <Login onLogin={login} busy={busy} error={error} />;
+    return <Login onLogin={login} onRegister={registerAccount} busy={busy} error={error} />;
   }
 
   const visibleProducts = products.filter((product) => (

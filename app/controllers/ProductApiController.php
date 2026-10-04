@@ -62,6 +62,72 @@ class ProductApiController extends Controller
         ]);
     }
 
+    public function register()
+    {
+        $remote_address = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $this->api->rate_limit('register:' . $remote_address, 5, 60);
+
+        $input = $this->json_body();
+        $username = $input['username'] ?? null;
+        $email = $input['email'] ?? null;
+        $password = $input['password'] ?? null;
+
+        if (!is_string($username)
+            || !preg_match('/^[A-Za-z0-9_.-]{3,50}$/', $username)) {
+            $this->api->respond_error(
+                'Username must be 3-50 characters and use only letters, numbers, dots, underscores, or hyphens.',
+                422
+            );
+        }
+
+        if (!is_string($email) || strlen($email) > 255
+            || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            $this->api->respond_error('Enter a valid email address.', 422);
+        }
+
+        if (!is_string($password) || strlen($password) < 12 || strlen($password) > 72) {
+            $this->api->respond_error('Password must be between 12 and 72 bytes.', 422);
+        }
+
+        $existing = $this->db->raw(
+            'SELECT username, email FROM users WHERE username = ? OR email = ? LIMIT 1',
+            [$username, $email]
+        )->fetch(PDO::FETCH_ASSOC);
+
+        if ($existing) {
+            $field = $existing['username'] === $username ? 'Username' : 'Email';
+            $this->api->respond_error("{$field} is already registered.", 409);
+        }
+
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        if ($password_hash === false) {
+            throw new RuntimeException('Unable to securely hash the account password.');
+        }
+
+        $this->db->raw(
+            'INSERT INTO users (username, email, password, role, is_active)
+             VALUES (?, ?, ?, ?, ?)',
+            [$username, $email, $password_hash, 'user', 1]
+        );
+        $user_id = (int) $this->db->raw('SELECT LAST_INSERT_ID()')->fetchColumn();
+
+        $tokens = $this->api->issue_tokens([
+            'id'     => $user_id,
+            'role'   => 'user',
+            'scopes' => ['read'],
+        ]);
+
+        $this->api->respond([
+            'user' => [
+                'id'       => $user_id,
+                'username' => $username,
+                'email'    => $email,
+                'role'     => 'user',
+            ],
+            'tokens' => $tokens,
+        ], 201);
+    }
+
     public function refresh()
     {
         $input = $this->json_body();

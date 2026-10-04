@@ -36,7 +36,7 @@ This is a separate React frontend for the existing LavaLust application. It uses
    npm run dev
    ```
 
-   Open `http://localhost:5173`. Sign in with an existing active account in the `users` table.
+   Open `http://localhost:5173`. Choose **Create an account** to add the first user, or sign in with an existing active account in the `users` table.
 
 ## API
 
@@ -44,6 +44,7 @@ All endpoints are under `/api`. Login and token refresh are public; product oper
 
 | Method | Endpoint | Authentication | Purpose |
 |---|---|---|---|
+| POST | `/api/auth/register` | No | Create an account (username, email, password); assigns only the regular `user` role |
 | POST | `/api/auth/login` | No | Login with `identifier` (username or email) and `password` |
 | POST | `/api/auth/refresh` | Refresh token | Rotate tokens |
 | POST | `/api/auth/logout` | Access token | Revoke the supplied refresh token and log out |

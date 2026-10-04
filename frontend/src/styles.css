@@ -37,6 +37,8 @@ button { cursor: pointer; }
 .button-secondary { color: #53546a; background: #f0f0f6; }
 .button-quiet { color: #68697d; background: #f4f4f8; }
 .button-wide { width: 100%; margin-top: 7px; padding: 13px; }
+.auth-switch { display: block; margin: 17px auto 0; padding: 5px; border: 0; color: #6b59d4; background: transparent; font-size: 12px; font-weight: 700; }
+.auth-switch:hover { text-decoration: underline; }
 
 .dashboard { width: min(1160px, 90%); margin: 48px auto 80px; }
 .page-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; }
