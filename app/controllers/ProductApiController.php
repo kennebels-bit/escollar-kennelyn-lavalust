@@ -39,7 +39,7 @@ class ProductApiController extends Controller
         $identifier = trim($identifier);
 
         $stmt = $this->db->raw(
-            'SELECT id, username, email, password, role FROM users
+            'SELECT id, username, email, password, role FROM api_users
              WHERE (username = ? OR email = ?) AND is_active = 1 LIMIT 1',
             [$identifier, $identifier]
         );
@@ -90,7 +90,7 @@ class ProductApiController extends Controller
         }
 
         $existing = $this->db->raw(
-            'SELECT username, email FROM users WHERE username = ? OR email = ? LIMIT 1',
+            'SELECT username, email FROM api_users WHERE username = ? OR email = ? LIMIT 1',
             [$username, $email]
         )->fetch(PDO::FETCH_ASSOC);
 
@@ -105,7 +105,7 @@ class ProductApiController extends Controller
         }
 
         $this->db->raw(
-            'INSERT INTO users (username, email, password, role, is_active)
+            'INSERT INTO api_users (username, email, password, role, is_active)
              VALUES (?, ?, ?, ?, ?)',
             [$username, $email, $password_hash, 'user', 1]
         );
@@ -162,7 +162,7 @@ class ProductApiController extends Controller
         $this->api->require_jwt();
         $stmt = $this->db->raw(
             'SELECT id, product_name, description, price, quantity, created_at
-             FROM products ORDER BY id DESC'
+             FROM api_products ORDER BY id DESC'
         );
         $this->api->respond(['data' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
     }
@@ -173,7 +173,7 @@ class ProductApiController extends Controller
         $product_id = $this->validated_id($id);
         $stmt = $this->db->raw(
             'SELECT id, product_name, description, price, quantity, created_at
-             FROM products WHERE id = ? LIMIT 1',
+             FROM api_products WHERE id = ? LIMIT 1',
             [$product_id]
         );
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -191,7 +191,7 @@ class ProductApiController extends Controller
         $input = $this->validated_product($this->json_body());
 
         $this->db->raw(
-            'INSERT INTO products (product_name, description, price, quantity)
+            'INSERT INTO api_products (product_name, description, price, quantity)
              VALUES (?, ?, ?, ?)',
             [
                 $input['product_name'],
@@ -246,7 +246,7 @@ class ProductApiController extends Controller
         $values[] = $product_id;
 
         $this->db->raw(
-            'UPDATE products SET ' . implode(', ', $assignments) . ' WHERE id = ?',
+            'UPDATE api_products SET ' . implode(', ', $assignments) . ' WHERE id = ?',
             $values
         );
 
@@ -257,7 +257,7 @@ class ProductApiController extends Controller
     {
         $this->api->require_jwt();
         $product_id = $this->validated_id($id);
-        $stmt = $this->db->raw('DELETE FROM products WHERE id = ?', [$product_id]);
+        $stmt = $this->db->raw('DELETE FROM api_products WHERE id = ?', [$product_id]);
 
         if ($stmt->rowCount() === 0) {
             $this->api->respond_error('Product not found.', 404);
@@ -348,7 +348,7 @@ class ProductApiController extends Controller
     {
         return $this->db->raw(
             'SELECT id, product_name, description, price, quantity, created_at
-             FROM products WHERE id = ? LIMIT 1',
+             FROM api_products WHERE id = ? LIMIT 1',
             [$id]
         )->fetch(PDO::FETCH_ASSOC);
     }

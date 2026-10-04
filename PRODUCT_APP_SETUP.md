@@ -1,6 +1,6 @@
 # Product Desk setup and deployment
 
-This is a separate React frontend for the existing LavaLust application. It uses the JWT-enabled LavaLust API and Aiven MySQL; it does not connect to MySQL from the browser. The existing `ProductController`, `ProductModel`, and product views are not used or modified by this frontend. On Render, it is served at `/product-desk/` by the same service as the API.
+This is a separate React frontend for the existing LavaLust application. It uses the JWT-enabled LavaLust API and Aiven MySQL; it does not connect to MySQL from the browser. The existing `ProductController`, `ProductModel`, and product views are not used or modified by this frontend. The API stores records in separate `api_products` and `api_users` tables; migration 005 copies the current records from the legacy `products` and `users` tables without deleting or changing the legacy rows. After that one-time copy, the API and legacy app operate on their own tables. On Render, the frontend is served at `/product-desk/` by the same service as the API.
 
 ## Local setup
 
@@ -19,7 +19,7 @@ This is a separate React frontend for the existing LavaLust application. It uses
    Remove-Item Env:MIGRATIONS_ENABLED
    ```
 
-   The new migration adds `created_at` and limits `product_name` to 100 characters. It refuses to shorten the column if existing product names exceed that length.
+   The migrations add `created_at`, limit the legacy product name to 100 characters, and create the separate API tables with a one-time copy of existing records. Migration 004 refuses to shorten the column if existing product names exceed that length.
 4. Set `FRONTEND_URL=http://localhost:5173` in the backend `.env`.
 5. Start the backend in one terminal:
 
@@ -44,7 +44,7 @@ All endpoints are under `/api`. Login and token refresh are public; product oper
 
 | Method | Endpoint | Authentication | Purpose |
 |---|---|---|---|
-| POST | `/api/auth/register` | No | Create an account (username, email, password); assigns only the regular `user` role |
+| POST | `/api/auth/register` | No | Create an API-only account in `api_users` (username, email, password); assigns only the regular `user` role |
 | POST | `/api/auth/login` | No | Login with `identifier` (username or email) and `password` |
 | POST | `/api/auth/refresh` | Refresh token | Rotate tokens |
 | POST | `/api/auth/logout` | Access token | Revoke the supplied refresh token and log out |
@@ -55,7 +55,7 @@ All endpoints are under `/api`. Login and token refresh are public; product oper
 | PUT/PATCH | `/api/products/{id}` | Yes | Replace or partially update product fields |
 | DELETE | `/api/products/{id}` | Yes | Delete a product |
 
-Product JSON fields are `product_name`, `description`, `price`, and `quantity`. The API returns JSON through LavaLust's `Api` library and validates input before using prepared SQL statements.
+Product JSON fields are `product_name`, `description`, `price`, and `quantity`. API products are stored in `api_products`; legacy Product Management continues using `products`. API accounts are stored in `api_users`; the legacy login continues using `users`. The API returns JSON through LavaLust's `Api` library and validates input before using prepared SQL statements.
 
 ## Render
 
