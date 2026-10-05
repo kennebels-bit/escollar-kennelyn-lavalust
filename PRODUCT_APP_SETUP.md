@@ -1,6 +1,6 @@
 # Product Desk setup and deployment
 
-This is a separate React frontend for the existing LavaLust application. It uses the JWT-enabled LavaLust API and Aiven MySQL; it does not connect to MySQL from the browser. The existing `ProductController`, `ProductModel`, and product views are not used or modified by this frontend. The API stores records in separate `api_products` and `api_users` tables; migration 005 copies the current records from the legacy `products` and `users` tables without deleting or changing the legacy rows. After that one-time copy, the API and legacy app operate on their own tables. On Render, the frontend is served at `/product-desk/` by the same service as the API.
+This is a separate React frontend for the existing LavaLust application. It uses the JWT-enabled LavaLust API and Aiven MySQL; it does not connect to MySQL from the browser. The existing `ProductController`, `ProductModel`, and product views are not used or modified by this frontend. The API stores records in separate `api_products` and `api_users` tables; migration 005 copies the current records from the legacy `products` and `users` tables without deleting or changing the legacy rows. After that one-time copy, the API and legacy app operate on their own tables. On Render, the frontend is deployed as a static site separate from the API service.
 
 ## Local setup
 
@@ -59,15 +59,12 @@ Product JSON fields are `product_name`, `description`, `price`, and `quantity`. 
 
 ## Render
 
-The root `render.yaml` describes one Docker service for the LavaLust API and React frontend. The existing Render service uses `public/Dockerfile`; each build compiles the React frontend into `public/product-desk/`, and the backend continues to handle `/api`. Connect the repository to Render as a Blueprint if creating a new service. Provide the Aiven values for `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, and `DB_NAME`. Render generates separate `JWT_SECRET` and `REFRESH_TOKEN_KEY` values. The API pre-deploy command applies pending migrations using a one-command `MIGRATIONS_ENABLED=true` override; public web requests keep migrations disabled.
+The root `render.yaml` describes the LavaLust API Docker service and a separate React static site. Connect the repository to Render as a Blueprint to create or update both services. Provide the Aiven values for `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, and `DB_NAME`. Render generates separate `JWT_SECRET` and `REFRESH_TOKEN_KEY` values. The API pre-deploy command applies pending migrations using a one-command `MIGRATIONS_ENABLED=true` override; public web requests keep migrations disabled.
 
-For the existing same-origin Render service:
+The static site builds from `frontend/` and publishes `dist/`. Its `VITE_API_BASE_URL` points to `https://lavalust-product-system.onrender.com/api`. If the API uses a different hostname, update that value in the Blueprint before deploying. Set the API service's `FRONTEND_URL` to the static site's exact HTTPS origin (no path or trailing slash), for example `https://lavalust-product-frontend.onrender.com`, so API CORS permits browser requests from the frontend. If the existing API service is not managed by this Blueprint, set `FRONTEND_URL` in its Render dashboard and create the static site with the same repository and branch, root directory `frontend`, build command `npm ci && npm run build`, publish directory `dist`, and the API URL above as `VITE_API_BASE_URL`.
 
-- Set API service `FRONTEND_URL` to its exact HTTPS origin (no path or trailing slash) if it is configured.
-- The frontend uses the relative `/api` URL in production, so it and the API share the same Render hostname.
-
-Check `https://your-api.onrender.com/api/health` before logging in. Open `https://your-api.onrender.com/product-desk/` for the frontend. Keep the Aiven database credentials and both JWT secrets only in Render's environment settings.
+Check `https://lavalust-product-system.onrender.com/api/health` before logging in. Open `https://lavalust-product-frontend.onrender.com/` for the frontend. Keep the Aiven database credentials and both JWT secrets only in Render's environment settings.
 
 ## Submission URLs
 
-The assignment asks for separate backend and frontend GitHub repositories, but this project is deployed as one monorepo and one Render service to use the existing Render URL. The frontend source remains isolated in `frontend/`. Do not put credentials, tokens, or screenshots containing secrets in either repository.
+The assignment asks for separate backend and frontend GitHub repositories, but this project keeps the frontend source in `frontend/` in the same repository and deploys the backend and frontend as separate Render services. Do not put credentials, tokens, or screenshots containing secrets in either repository.
