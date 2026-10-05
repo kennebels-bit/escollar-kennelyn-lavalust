@@ -26,12 +26,3 @@ services:
         generateValue: true
       - key: FRONTEND_URL
         sync: false
-  - type: web
-    name: lavalust-product-frontend
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_BASE_URL
-        value: https://escollar-kennelyn.onrender.com/api

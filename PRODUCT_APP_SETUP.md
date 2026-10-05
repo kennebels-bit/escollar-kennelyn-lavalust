@@ -1,6 +1,6 @@
 # Product Desk setup and deployment
 
-This is a separate React frontend for the existing LavaLust application. It uses the JWT-enabled LavaLust API and Aiven MySQL; it does not connect to MySQL from the browser. The existing `ProductController`, `ProductModel`, and product views are not used or modified by this frontend. The API stores records in separate `api_products` and `api_users` tables; migration 005 copies the current records from the legacy `products` and `users` tables without deleting or changing the legacy rows. After that one-time copy, the API and legacy app operate on their own tables. On Render, the frontend is deployed as a static site separate from the API service.
+The React frontend lives in the separate [lavalust-product-frontend repository](https://github.com/kennebels-bit/lavalust-product-frontend) and uses this backend's JWT API and Aiven MySQL; it does not connect to MySQL from the browser. The existing `ProductController`, `ProductModel`, and product views are not used or modified by the frontend. The API stores records in separate `api_products` and `api_users` tables; migration 005 copies the current records from the legacy `products` and `users` tables without deleting or changing the legacy rows. After that one-time copy, the API and legacy app operate on their own tables. The backend and frontend deploy as separate Render services from separate GitHub repositories.
 
 ## Local setup
 
@@ -27,10 +27,11 @@ This is a separate React frontend for the existing LavaLust application. It uses
    php lava serve
    ```
 
-6. Start the React app in another terminal:
+6. Clone the frontend repository into a separate folder and start the React app in another terminal:
 
    ```powershell
-   cd frontend
+   git clone https://github.com/kennebels-bit/lavalust-product-frontend.git
+   cd lavalust-product-frontend
    Copy-Item .env.example .env
    npm ci
    npm run dev
@@ -59,7 +60,7 @@ Product JSON fields are `product_name`, `description`, `price`, and `quantity`. 
 
 ## Render
 
-The production API runs in the existing `escollar-kennelyn` Render web service. The React app runs separately in the `lavalust-product-frontend` Render static site; both deploy from the `main` branch of this repository. The static site uses root directory `frontend`, build command `npm ci && npm run build`, publish directory `dist`, and `VITE_API_BASE_URL=https://escollar-kennelyn.onrender.com/api`. The API's `FRONTEND_URL` is set to `https://lavalust-product-frontend.onrender.com` to allow browser requests from that site.
+The production API runs in the existing `escollar-kennelyn` Render web service, sourced from the backend repository. The `lavalust-product-frontend` Render Static Site builds from the separate [frontend repository](https://github.com/kennebels-bit/lavalust-product-frontend), branch `main`, using `npm ci && npm run build` and publishing `dist`. Its `VITE_API_BASE_URL` is `https://escollar-kennelyn.onrender.com/api`. The API's `FRONTEND_URL` is set to `https://lavalust-product-frontend.onrender.com` to allow browser requests from that site.
 
 The root `render.yaml` is a Blueprint template for a new environment; its API service is named `lavalust-product-system`, which is not the existing production service. Do not sync it to the production workspace as-is, or it may create a duplicate API service. For a new environment, review the service names and set the Aiven values for `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, and `DB_NAME`. Render can generate separate `JWT_SECRET` and `REFRESH_TOKEN_KEY` values. The API pre-deploy command applies pending migrations using a one-command `MIGRATIONS_ENABLED=true` override; public web requests keep migrations disabled.
 
@@ -67,4 +68,4 @@ Check `https://escollar-kennelyn.onrender.com/api/health` before logging in. Ope
 
 ## Submission URLs
 
-The assignment asks for separate backend and frontend GitHub repositories, but this project keeps the frontend source in `frontend/` in the same repository and deploys the backend and frontend as separate Render services. Do not put credentials, tokens, or screenshots containing secrets in either repository.
+The backend and React frontend source are in separate repositories. Keep database credentials and token secrets in Render's environment settings; do not commit credentials, tokens, or screenshots containing secrets to either repository.
