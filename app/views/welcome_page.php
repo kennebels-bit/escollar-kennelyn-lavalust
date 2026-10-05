@@ -618,13 +618,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     <div class="wrap">
         <div class="section-label">// activities</div>
         <h2 class="section-title">Explore my activities.</h2>
-        <p class="section-desc">Open the Student Information, User List, Legacy Product Management, and API Product Desk activities from one place.</p>
+        <p class="section-desc">Open the Student Information, User List, and Product Management activities from one place.</p>
 
         <div class="hero-actions" style="justify-content: flex-start; margin-top: 2rem;">
             <a href="<?= site_url('student'); ?>" class="btn btn-primary">Student Information</a>
             <a href="<?= site_url('users'); ?>" class="btn btn-ghost">User List</a>
-            <a href="<?= site_url('login'); ?>" class="btn btn-ghost">Legacy Product Management</a>
-            <a href="<?= base_url('product-desk/index.html'); ?>" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">API Product Management</a>
+            <a href="<?= site_url('login'); ?>" class="btn btn-ghost">Product Management</a>
         </div>
     </div>
 </section>

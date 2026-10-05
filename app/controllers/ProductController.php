@@ -10,13 +10,38 @@ class ProductController extends Controller
 
         $this->call->database();
         $this->call->model('ProductModel');
+        $this->call->model('UsersModel');
     }
 
     private function requireLogin()
     {
-        if (!isset($_SESSION['user'])) {
-            redirect('login');
+        $session_user = $_SESSION['user'] ?? null;
+        if (!is_array($session_user) || !isset($session_user['id'])) {
+            redirect('login', false, false);
             exit;
+        }
+
+        $user = $this->UsersModel->getActiveById($session_user['id']);
+        if (!$user) {
+            $this->session->sess_destroy();
+            redirect('login', false, false);
+            exit;
+        }
+
+        $_SESSION['user'] = [
+            'id' => $user['id'],
+            'username' => $user['username'],
+            'role' => $user['role'],
+        ];
+    }
+
+    private function requireAdmin()
+    {
+        $this->requireLogin();
+
+        if ($_SESSION['user']['role'] !== 'admin') {
+            http_response_code(403);
+            exit('Administrator access required.');
         }
     }
 
@@ -25,20 +50,21 @@ class ProductController extends Controller
         $this->requireLogin();
 
         $data['products'] = $this->ProductModel->getAll();
+        $data['is_admin'] = $_SESSION['user']['role'] === 'admin';
 
         $this->call->view('products/index', $data);
     }
 
     public function create()
     {
-        $this->requireLogin();
+        $this->requireAdmin();
 
         $this->call->view('products/create');
     }
 
     public function store()
     {
-        $this->requireLogin();
+        $this->requireAdmin();
 
         $data = [
             'product_name' => $this->io->post('product_name'),
@@ -54,7 +80,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $this->requireLogin();
+        $this->requireAdmin();
 
         $data['product'] = $this->ProductModel->getById($id);
 
@@ -63,7 +89,7 @@ class ProductController extends Controller
 
     public function update($id)
     {
-        $this->requireLogin();
+        $this->requireAdmin();
 
         $data = [
             'product_name' => $this->io->post('product_name'),
@@ -79,7 +105,7 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $this->requireLogin();
+        $this->requireAdmin();
 
         $this->ProductModel->deleteProduct($id);
 

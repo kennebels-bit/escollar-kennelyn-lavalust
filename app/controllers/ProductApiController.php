@@ -52,7 +52,9 @@ class ProductApiController extends Controller
         $tokens = $this->api->issue_tokens([
             'id'     => $user['id'],
             'role'   => $user['role'],
-            'scopes' => ['read', 'write', 'delete'],
+            'scopes' => $user['role'] === 'admin'
+                ? ['read', 'write', 'delete']
+                : ['read'],
         ]);
 
         unset($user['password']);
@@ -159,7 +161,7 @@ class ProductApiController extends Controller
 
     public function products()
     {
-        $this->api->require_jwt();
+        $this->require_product_scope('read');
         $stmt = $this->db->raw(
             'SELECT id, product_name, description, price, quantity, created_at
              FROM api_products ORDER BY id DESC'
@@ -169,7 +171,7 @@ class ProductApiController extends Controller
 
     public function product($id)
     {
-        $this->api->require_jwt();
+        $this->require_product_scope('read');
         $product_id = $this->validated_id($id);
         $stmt = $this->db->raw(
             'SELECT id, product_name, description, price, quantity, created_at
@@ -187,7 +189,7 @@ class ProductApiController extends Controller
 
     public function create_product()
     {
-        $this->api->require_jwt();
+        $this->require_product_scope('write');
         $input = $this->validated_product($this->json_body());
 
         $this->db->raw(
@@ -208,7 +210,7 @@ class ProductApiController extends Controller
 
     public function update_product($id)
     {
-        $this->api->require_jwt();
+        $this->require_product_scope('write');
         $product_id = $this->validated_id($id);
         $existing = $this->fetch_product($product_id);
 
@@ -255,7 +257,7 @@ class ProductApiController extends Controller
 
     public function delete_product($id)
     {
-        $this->api->require_jwt();
+        $this->require_product_scope('delete');
         $product_id = $this->validated_id($id);
         $stmt = $this->db->raw('DELETE FROM api_products WHERE id = ?', [$product_id]);
 
@@ -280,6 +282,14 @@ class ProductApiController extends Controller
         }
 
         return $input;
+    }
+
+    private function require_product_scope($scope)
+    {
+        $user = $this->api->require_jwt();
+        if (!in_array($scope, $user['scopes'] ?? [], true)) {
+            $this->api->respond_error('Forbidden', 403);
+        }
     }
 
     private function validated_id($id)

@@ -17,6 +17,16 @@ class UsersModel extends Model
         return $this->db
             ->table($this->table)
             ->where('username', $username)
+            ->where('is_active', 1)
+            ->get();
+    }
+
+    public function getActiveById($id)
+    {
+        return $this->db
+            ->table($this->table)
+            ->where('id', $id)
+            ->where('is_active', 1)
             ->get();
     }
 }

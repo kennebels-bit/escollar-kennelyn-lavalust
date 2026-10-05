@@ -19,13 +19,17 @@ class AuthController extends Controller
             $username = $this->io->post('username');
             $password = $this->io->post('password');
 
-            $user = $this->UsersModel->getByUsername($username);
+            $user = is_string($username)
+                ? $this->UsersModel->getByUsername($username)
+                : null;
 
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user && is_string($password) && password_verify($password, $user['password'])) {
+                $this->session->after_successful_login();
 
                 $_SESSION['user'] = [
                     'id' => $user['id'],
-                    'username' => $user['username']
+                    'username' => $user['username'],
+                    'role' => $user['role'],
                 ];
 
                 redirect('products');
@@ -40,7 +44,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        unset($_SESSION['user']);
+        $this->session->sess_destroy();
 
         redirect('login');
     }

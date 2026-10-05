@@ -558,7 +558,7 @@ class Api
 
         if ($this->verify_user) {
             $stmt = $this->_lava->db->raw(
-                "SELECT id, role FROM {$this->users_table} WHERE id = ? LIMIT 1",
+                "SELECT id, role FROM {$this->users_table} WHERE id = ? AND is_active = 1 LIMIT 1",
                 [$payload['sub']]
             );
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -655,7 +655,7 @@ class Api
         }
 
         $user_stmt = $this->_lava->db->raw(
-            "SELECT id, role FROM {$this->users_table} WHERE id = ? LIMIT 1",
+            "SELECT id, role FROM {$this->users_table} WHERE id = ? AND is_active = 1 LIMIT 1",
             [$payload['sub']]
         );
         $user = $user_stmt->fetch(PDO::FETCH_ASSOC);

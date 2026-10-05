@@ -215,7 +215,9 @@ function Login({ onLogin, onRegister, busy, error }) {
         <p className="eyebrow">LAVALUST INVENTORY</p>
         <h1>{isRegistering ? 'Create your account' : 'Welcome back'}</h1>
         <p className="muted">
-          {isRegistering ? 'Set up an account to manage your product catalog.' : 'Sign in to manage your product catalog.'}
+          {isRegistering
+            ? 'Create a read-only account to view products. Only kenne has administrator access.'
+            : 'Sign in to view products. Only kenne can manage the catalog.'}
         </p>
         {error && <div className="alert alert-error" role="alert">{error}</div>}
         <form onSubmit={submit} className="login-form">
@@ -425,6 +427,7 @@ function App() {
     (sum, product) => sum + Number(product.price) * Number(product.quantity),
     0,
   );
+  const isAdmin = user.role === 'admin';
 
   return (
     <main className="app-shell">
@@ -436,7 +439,7 @@ function App() {
         <div className="account">
           <div className="account-copy">
             <strong>{user.username}</strong>
-            <span>Signed in</span>
+            <span>{isAdmin ? 'Administrator' : 'Read-only access'}</span>
           </div>
           <button className="button button-quiet" onClick={logout}>Log out</button>
         </div>
@@ -449,12 +452,14 @@ function App() {
             <h1>Your inventory</h1>
             <p className="muted">Keep your products organized and up to date.</p>
           </div>
-          <button
-            className="button button-primary"
-            onClick={() => { setActiveProduct(null); setShowForm(true); setError(''); }}
-          >
-            <span aria-hidden="true">＋</span> Add product
-          </button>
+          {isAdmin && (
+            <button
+              className="button button-primary"
+              onClick={() => { setActiveProduct(null); setShowForm(true); setError(''); }}
+            >
+              <span aria-hidden="true">＋</span> Add product
+            </button>
+          )}
         </div>
 
         {error && <div className="alert alert-error" role="alert">{error}</div>}
@@ -487,13 +492,16 @@ function App() {
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Created</th><th><span className="sr-only">Actions</span></th></tr>
+                <tr>
+                  <th>Product</th><th>Price</th><th>Quantity</th><th>Created</th>
+                  {isAdmin && <th><span className="sr-only">Actions</span></th>}
+                </tr>
               </thead>
               <tbody>
                 {loading ? (
-                  <tr><td colSpan="5" className="empty-state">Loading your products…</td></tr>
+                  <tr><td colSpan={isAdmin ? 5 : 4} className="empty-state">Loading your products…</td></tr>
                 ) : visibleProducts.length === 0 ? (
-                  <tr><td colSpan="5" className="empty-state">{search ? 'No products match your search.' : 'No products yet. Add your first product to get started.'}</td></tr>
+                  <tr><td colSpan={isAdmin ? 5 : 4} className="empty-state">{search ? 'No products match your search.' : isAdmin ? 'No products yet. Add your first product to get started.' : 'No products have been added yet.'}</td></tr>
                 ) : visibleProducts.map((product) => (
                   <tr key={product.id}>
                     <td>
@@ -505,12 +513,14 @@ function App() {
                     <td className="price-cell">₱{Number(product.price).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td><span className={`quantity-pill ${Number(product.quantity) === 0 ? 'quantity-empty' : ''}`}>{product.quantity} in stock</span></td>
                     <td>{product.created_at ? new Date(product.created_at.replace(' ', 'T')).toLocaleDateString() : '—'}</td>
-                    <td>
-                      <div className="row-actions">
-                        <button className="action-button" onClick={() => { setActiveProduct(product); setShowForm(true); setError(''); }}>Edit</button>
-                        <button className="action-button action-danger" onClick={() => deleteProduct(product)}>Delete</button>
-                      </div>
-                    </td>
+                    {isAdmin && (
+                      <td>
+                        <div className="row-actions">
+                          <button className="action-button" onClick={() => { setActiveProduct(product); setShowForm(true); setError(''); }}>Edit</button>
+                          <button className="action-button action-danger" onClick={() => deleteProduct(product)}>Delete</button>
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
